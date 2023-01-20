@@ -20,7 +20,7 @@ with open('dictionary.txt', encoding='utf8') as fp:
     dictionary = [line.strip() for line in fp]
     fp.close()
 
-leak = pd.read_excel('users_passwords_dump.xlsx')
+leak = pd.read_csv('users_passwords_dump.csv')
 
 
 def dictionary_attack(dictionary_word, target_hash):
