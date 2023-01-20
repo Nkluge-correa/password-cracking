@@ -19,8 +19,6 @@ To this end, here you can find a “[Password Security](http://password-security
 dash
 dash-bootstrap-components
 dash-daq
-unidecode
-openpyxl
 pandas
 
 ```
