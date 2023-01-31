@@ -10,10 +10,10 @@ from dash import dcc, html, Output, Input, State, dash_table
 app = dash.Dash(__name__,
                 meta_tags=[
                     {'name': 'viewport', 'content': 'width=device-width, initial-scale=1.0, maximum-scale=1.2, minimum-scale=0.5,'}],
-                external_stylesheets=[dbc.themes.SLATE])
+                external_stylesheets=[dbc.themes.SLATE, dbc.icons.BOOTSTRAP])
 
 server = app.server
-app.title = 'Password Security 🔒'
+app.title = 'Password Security 🔓'
 
 
 with open('dictionary.txt', encoding='utf8') as fp:
@@ -138,8 +138,8 @@ modal_hash = html.Div(
                                leak_table,
                                ]),
                 dbc.ModalFooter(
-                    html.Div([dbc.Button('Close', id='close-body-scroll-2', className='ms-auto',
-                             n_clicks=0, color='warning', outline=False)], style={'display': 'inline-block'})
+                    html.Div([dbc.Button(html.I(className="bi bi-x-circle"), id='close-body-scroll-2', className='ms-auto',
+                             n_clicks=0, color='warning', outline=True)], style={'display': 'inline-block'})
                 ),
             ],
             id='modal-body-scroll-2',
@@ -199,8 +199,8 @@ modal_trust = html.Div(
                                             'text-justify': 'inter-word'}), html.Br(),
                                ]),
                 dbc.ModalFooter(
-                    html.Div([dbc.Button('Close', id='close-body-scroll-3', className='ms-auto',
-                             n_clicks=0, color='warning', outline=False)], style={'display': 'inline-block'})
+                    html.Div([dbc.Button(html.I(className="bi bi-x-circle"), id='close-body-scroll-3', className='ms-auto',
+                             n_clicks=0, color='warning', outline=True)], style={'display': 'inline-block'})
                 ),
             ],
             id='modal-body-scroll-3',
@@ -300,8 +300,8 @@ modal_entropy = html.Div(
 
                                ]),
                 dbc.ModalFooter(
-                    html.Div([dbc.Button('Close', id='close-body-scroll-4', className='ms-auto',
-                             n_clicks=0, color='warning', outline=False)], style={'display': 'inline-block'})
+                    html.Div([dbc.Button(html.I(className="bi bi-x-circle"), id='close-body-scroll-4', className='ms-auto',
+                             n_clicks=0, color='warning', outline=True)], style={'display': 'inline-block'})
                 ),
             ],
             id='modal-body-scroll-4',
@@ -379,21 +379,33 @@ hash_input = html.Div(
 
 generator_input = html.Div(
     [
-        dbc.Label(dcc.Markdown("## UPGRADE YOUR PASSWORD! 👨🏽‍💻🔒",
+        dbc.Label(dcc.Markdown("## UPGRADE YOUR PASSWORD! 🔒",
                   style={'margin-left': '15px'})), html.Br(),
         modal_entropy, card_2
     ]
 )
 
+badges = html.Span([
+    dbc.Badge([html.I(className="bi bi-heart-fill"), "  Open-Source"], href="https://github.com/Nkluge-correa/password_cracking_dash",
+              color="dark", className="text-decoration-none", style={'margin-right': '5px'}),
+    dbc.Badge([html.I(className="bi bi-bank"), "  AIRES at PUCRS"], href="https://en.airespucrs.org/",
+              color="dark", className="text-decoration-none", style={'margin-right': '5px'}),
+    dbc.Badge([html.I(className="bi bi-filetype-py"), "  Made with Python"], href="https://www.python.org/",
+              color="dark", className="text-decoration-none", style={'margin-right': '5px'}),
+    dbc.Badge([html.I(className="bi bi-github"), "  Nkluge-correa"], href="https://nkluge-correa.github.io/",
+              color="dark", className="text-decoration-none", style={'margin-right': '5px'})
+])
+
 
 app.layout = dbc.Container(
     fluid=False,
     children=[
-        html.H1('Dictionary Attack & Password Generator 👾🔒', style={'textAlign': 'center',
-                                                                    'margin-top': '20px'}),
+        html.H1('Dictionary Attack & Password Generator 🔓', style={'textAlign': 'center',
+                                                                   'margin-top': '20px'}),
+        html.Div([badges], style={
+                 'textAlign': 'center', 'margin-top': '10px', 'margin-bottom': '10px'}),
         html.Hr(),
         dbc.Row([
-            dbc.Col([], md=1),
             dbc.Col([
                 password_input,
                 card_0,
@@ -401,10 +413,8 @@ app.layout = dbc.Container(
                 card_1,
                 generator_input,
             ], md=10),
-            dbc.Col([], md=1),
-        ]),
+        ], justify='center'),
         html.Hr(),
-
     ],
 )
 
