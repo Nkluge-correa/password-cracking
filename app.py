@@ -474,7 +474,7 @@ def password_entropy(value):
 
                 - This password has an entropy of: ${round(len(text) * math.log2(x), 2)}$ bits = ${len(text)} \\times log2({x})$.
                 - To guess this password, character-by-character, via brute-force, it would take up to: ${'{:,.2f}'.format(int(2 ** (round(len(text) * math.log2(x), 2))))}$ guesses.
-                - At 10,000 guesses per second without GPU, would take up to ${(int(2 ** (round(len(text) * math.log2(x))))/10000)}$ seconds to crack this password.
+                - At $10,000$ guesses per second without GPU, would take up to ${(int(2 ** (round(len(text) * math.log2(x))))/10000)}$ seconds to crack this password.
                 - Equivalent to ${'{:,.2f}'.format((int(2 ** (round(len(text) * math.log2(x), 2)))/10000)/86400)}$ days.
                 
                 '''
@@ -508,7 +508,7 @@ def generate_password(click, value):
         - Maximum number of operations to Brute Force your passaword: ~ ${'{:,.2f}'.format(int(2 ** (16 * int(value))))}$.
         - This password has an entropy of: ${round(len(password_len) * math.log2(x), 2)}$ bits.
         - To guess this password, character-by-character, via brute-force, it would take up to:  ${'{:,.2f}'.format(int(2 ** (round(len(password_len) * math.log2(x), 2))))}$ guesses.
-        - At 10,000 guesses per second without GPU, would take up to ${(int(2 ** (round(len(password_len) * math.log2(x))))/10000)}$ seconds to crack this password.
+        - At $10,000$ guesses per second without GPU, would take up to ${(int(2 ** (round(len(password_len) * math.log2(x))))/10000)}$ seconds to crack this password.
         - Equivalent to ${'{:,.2f}'.format((int(2 ** (round(len(password_len) * math.log2(x), 2)))/10000)/86400)}$ days.
         '''
 
