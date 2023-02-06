@@ -243,7 +243,7 @@ modal_entropy = html.Div(
 
                                '''),
                                dcc.Markdown('''
-                                In 2019, the United Kingdom’s [NCSC](https://en.wikipedia.org/wiki/National_Cyber_Security_Centre_(United_Kingdom)) analyzed public databases of breached accounts **to see which words, phrases, and strings people used**. Top of the list was `123456`, appearing in more than **23 million passwords**. The second-most popular string, `123456789`, while the top five included `qwerty`, `password` and `1111111`. As you can see, people do not give much credit to how easy it is to crack trivial passwords like these. To avoid getting your password used as another sample in a dictionary attack, you need to make your password stronger.
+                                In 2019, the United Kingdom's [NCSC](https://en.wikipedia.org/wiki/National_Cyber_Security_Centre_(United_Kingdom)) analyzed public databases of breached accounts **to see which words, phrases, and strings people used**. Top of the list was `123456`, appearing in more than **23 million passwords**. The second-most popular string, `123456789`, while the top five included `qwerty`, `password` and `1111111`. As you can see, people do not give much credit to how easy it is to crack trivial passwords like these. To avoid getting your password used as another sample in a dictionary attack, you need to make your password stronger.
                                 ''', style={'font-size': 24, 'text-align': 'justify',
                                             'text-justify': 'inter-word'}), html.Br(),
                                dcc.Markdown('''
@@ -262,37 +262,35 @@ modal_entropy = html.Div(
                                             'font-size': 24, 'text-align': 'justify',
                                             'text-justify': 'inter-word'}), html.Br(),
                                dcc.Markdown('''
-                                ```markdown
 
-                                E = L x log2(R)
-                                
-                                ```
-                                ''', style={'font-size': 24, 'text-align': 'center'}), html.Br(),
+                                $$E = L \\times log2(R)$$
+        
+                                ''', style={'font-size': 24, 'text-align': 'center'}, mathjax=True), html.Br(),
                                dcc.Markdown('where:', style={
                                             'font-size': 24, 'text-align': 'justify',
                                             'text-justify': 'inter-word'}), html.Br(),
                                dcc.Markdown('''
-                                - E = password entropy;
-                                - L = Password length, i.e., the number of characters in the password;
-                                - R = Size of the pool of unique characters from which we build the password.\n
+                                - $E$ = password entropy;
+                                - $L$ = Password length, i.e., the number of characters in the password;
+                                - $R$ = Size of the pool of unique characters from which we build the password.
 
                                 Also:
 
-                                - < 28 bits = Very Weak;  
-                                - 28 - 35 bits = Weak;
-                                - 36 - 59 bits = Reasonable; 
-                                - 60 - 127 bits = Strong;
-                                - 128 + bits = Very Strong.
+                                - $< 28$ bits = Very Weak;  
+                                - $28 - 35$ bits = Weak;
+                                - $36 - 59$ bits = Reasonable; 
+                                - $60 - 127$ bits = Strong;
+                                - $+ 128$ bits = Very Strong.
 
                                 ''', style={'font-size': 24, 'text-align': 'justify',
-                                            'text-justify': 'inter-word'}), html.Br(),
+                                            'text-justify': 'inter-word'}, mathjax=True), html.Br(),
                                dbc.Label(dcc.Markdown(
                                    'Check your password strength on the cell bellow!', style={'font-size': 24, 'text-align': 'justify',
                                                                                               'text-justify': 'inter-word'})),
                                dbc.Input(placeholder="Dummy-Password goes here...",
                               type="password", id='dummy-password'),
                                html.Div([dbc.Card(dbc.CardBody([dcc.Markdown(
-                                   " ", style={'font-size': 24}, id='password-entropy')]))]), html.Br(),
+                                   " ", style={'font-size': 24}, id='password-entropy', mathjax=True)]))]), html.Br(),
                                dcc.Markdown('If you do not belive this page, belive [XKCD](https://xkcd.com/936/)', style={
                                    'font-size': 24, 'text-align': 'center'}), html.Br(),
                                html.Div([html.Img(id='img_1', src=app.get_asset_url('password_strength.png'), height=601, width=740, style={
@@ -345,7 +343,7 @@ card_2 = html.Div(
     [
         dbc.Card(
             dbc.CardBody([
-                dcc.Markdown(" ", id='generated-password')
+                dcc.Markdown(" ", id='generated-password', mathjax=True)
             ])
         ),
     ], style={'margin-left': '15px', 'margin-bottom': '15px'}
@@ -474,10 +472,10 @@ def password_entropy(value):
             x += 32
         return f'''
 
-                - This password has an entropy of: `{round(len(text) * math.log2(x), 2)} bits = {len(text)}` * log2(`{x}`).
-                - To guess this password, character-by-character, via brute-force, it would take up to: 2 ** `{round(len(text) * math.log2(x), 2)}` = `{'{:,.2f}'.format(int(2 ** (round(len(text) * math.log2(x), 2))))}` guesses.
-                - At 10,000 guesses per second without GPU, would take up to `{(int(2 ** (round(len(text) * math.log2(x))))/10000)}` seconds to crack this password.
-                - Equivalent to `{'{:,.2f}'.format((int(2 ** (round(len(text) * math.log2(x), 2)))/10000)/86400)}` days.
+                - This password has an entropy of: ${round(len(text) * math.log2(x), 2)}$ bits = ${len(text)} \\times log2({x})$.
+                - To guess this password, character-by-character, via brute-force, it would take up to: ${'{:,.2f}'.format(int(2 ** (round(len(text) * math.log2(x), 2))))}$ guesses.
+                - At 10,000 guesses per second without GPU, would take up to ${(int(2 ** (round(len(text) * math.log2(x))))/10000)}$ seconds to crack this password.
+                - Equivalent to ${'{:,.2f}'.format((int(2 ** (round(len(text) * math.log2(x), 2)))/10000)/86400)}$ days.
                 
                 '''
 
@@ -505,13 +503,13 @@ def generate_password(click, value):
             x += 32
         return f'''
         - Your password is: `{password_txt}`
-        - These words were choosen out of `{'{:,.2f}'.format(len(word_password_bag))}` possible words.'
-        - Space of possible passwords = `{'{:,.2f}'.format(len(word_password_bag) ** int(value))}`.
-        - Maximum number of operations to Brute Force your passaword: ~ `{'{:,.2f}'.format(int(2 ** (16 * int(value))))}`.
-        - This password has an entropy of: `{round(len(password_len) * math.log2(x), 2)}` bits.
-        - To guess this password, character-by-character, via brute-force, it would take up to: 2 ** `{round(len(password_len) * math.log2(x), 2)}` = `{'{:,.2f}'.format(int(2 ** (round(len(password_len) * math.log2(x), 2))))}` guesses.
-        - At 10,000 guesses per second without GPU, would take up to `{(int(2 ** (round(len(password_len) * math.log2(x))))/10000)}` seconds to crack this password.
-        - Equivalent to `{'{:,.2f}'.format((int(2 ** (round(len(password_len) * math.log2(x), 2)))/10000)/86400)}` days.
+        - These words were choosen out of ${'{:,.2f}'.format(len(word_password_bag))}$ possible words.'
+        - Space of possible passwords = ${'{:,.2f}'.format(len(word_password_bag) ** int(value))}$.
+        - Maximum number of operations to Brute Force your passaword: ~ ${'{:,.2f}'.format(int(2 ** (16 * int(value))))}$.
+        - This password has an entropy of: ${round(len(password_len) * math.log2(x), 2)}$ bits.
+        - To guess this password, character-by-character, via brute-force, it would take up to:  ${'{:,.2f}'.format(int(2 ** (round(len(password_len) * math.log2(x), 2))))}$ guesses.
+        - At 10,000 guesses per second without GPU, would take up to ${(int(2 ** (round(len(password_len) * math.log2(x))))/10000)}$ seconds to crack this password.
+        - Equivalent to ${'{:,.2f}'.format((int(2 ** (round(len(password_len) * math.log2(x), 2)))/10000)/86400)}$ days.
         '''
 
 
