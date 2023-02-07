@@ -15,7 +15,6 @@ app = dash.Dash(__name__,
 server = app.server
 app.title = 'Password Security 🔓'
 
-
 with open('dictionary.txt', encoding='utf8') as fp:
     dictionary = [line.strip() for line in fp]
     fp.close()
@@ -81,7 +80,8 @@ leak_table = html.Div(children=[
 modal_hash = html.Div(
     [
         dbc.Button('Hash?', id='info-button', n_clicks=0,
-                   outline=True, color='warning'),
+                   outline=True, color='warning', style={'border': 0,
+                                                         'font-weight': 'bold'}),
         dbc.Modal(
             [
                 dbc.ModalHeader(dbc.ModalTitle(dcc.Markdown(
@@ -102,11 +102,12 @@ modal_hash = html.Div(
                                '''),
                                dcc.Markdown('''
 
-                                ```python
+                               ```markdown
 
                                 password101 = SHA-1 = 523cf99e800d57d0ff0ac7b97e04ebc2b9b4b263
 
                                 ```
+
                                 ''', style={'font-size': 24, 'text-align': 'center'}), html.Br(),
                                dcc.Markdown('''
                                 **SHA-1** (_Secure Hash Algorithm 1_) is a cryptographically **broken** but still widely used [hash function](https://en.wikipedia.org/wiki/Hash_function "Hash function") which takes an input and produces a 160-bit (20-byte) hash value known as a [message digest](https://en.wikipedia.org/wiki/Message_digest "Message digest") - typically rendered as a [hexadecimal](https://en.wikipedia.org/wiki/Hexadecimal "Hexadecimal") number, 40 digits long. It was designed by the United States [National Security Agency](https://en.wikipedia.org/wiki/National_Security_Agency "National Security Agency"), and is a U.S. [Federal Information Processing Standard](https://en.wikipedia.org/wiki/Federal_Information_Processing_Standard "Federal Information Processing Standard").
@@ -139,7 +140,8 @@ modal_hash = html.Div(
                                ]),
                 dbc.ModalFooter(
                     html.Div([dbc.Button(html.I(className="bi bi-x-circle"), id='close-body-scroll-2', className='ms-auto',
-                             n_clicks=0, color='warning', outline=True)], style={'display': 'inline-block'})
+                             n_clicks=0, color='warning', outline=True, style={'border': 0,
+                                                                               'font-weight': 'bold'})], style={'display': 'inline-block'})
                 ),
             ],
             id='modal-body-scroll-2',
@@ -158,7 +160,8 @@ modal_hash = html.Div(
 modal_trust = html.Div(
     [
         dbc.Button('Password Cracking?', id='trust-button',
-                   n_clicks=0, outline=True, color='warning'),
+                   n_clicks=0, outline=True, color='warning', style={'border': 0,
+                                                                     'font-weight': 'bold'}),
         dbc.Modal(
             [
                 dbc.ModalHeader(dbc.ModalTitle(dcc.Markdown(
@@ -200,7 +203,8 @@ modal_trust = html.Div(
                                ]),
                 dbc.ModalFooter(
                     html.Div([dbc.Button(html.I(className="bi bi-x-circle"), id='close-body-scroll-3', className='ms-auto',
-                             n_clicks=0, color='warning', outline=True)], style={'display': 'inline-block'})
+                             n_clicks=0, color='warning', outline=True, style={'border': 0,
+                                                                               'font-weight': 'bold'})], style={'display': 'inline-block'})
                 ),
             ],
             id='modal-body-scroll-3',
@@ -219,7 +223,8 @@ modal_trust = html.Div(
 modal_entropy = html.Div(
     [
         html.Div([dbc.Button('Password Security', id='entropy-button', n_clicks=0, outline=True,
-                 color='warning')], style={'display': 'inline-block', 'text-align': 'left'}),
+                 color='warning', style={'border': 0,
+                                         'font-weight': 'bold'})], style={'display': 'inline-block', 'text-align': 'left'}),
         dbc.Modal(
             [
                 dbc.ModalHeader(dbc.ModalTitle(dcc.Markdown(
@@ -300,7 +305,8 @@ modal_entropy = html.Div(
                                ]),
                 dbc.ModalFooter(
                     html.Div([dbc.Button(html.I(className="bi bi-x-circle"), id='close-body-scroll-4', className='ms-auto',
-                             n_clicks=0, color='warning', outline=True)], style={'display': 'inline-block'})
+                             n_clicks=0, color='warning', outline=True, style={'border': 0,
+                                                                               'font-weight': 'bold'})], style={'display': 'inline-block'})
                 ),
             ],
             id='modal-body-scroll-4',
@@ -309,7 +315,8 @@ modal_entropy = html.Div(
             is_open=False,
         ),
         html.Div([dbc.Button('Generate Password', id='generate-password-button', n_clicks=0, outline=True,
-                 color='warning', style={'margin-left': '15px'})], style={'display': 'inline-block', 'text-align': 'right'}),
+                 color='warning', style={'border': 0,
+                                         'font-weight': 'bold'})], style={'display': 'inline-block', 'text-align': 'right', 'margin-left': '15px'}),
         html.Div([daq.NumericInput(min=2, max=10, value=4, id='generate-password-number',
                  style={'margin-left': '15px'})], style={'display': 'inline-block', 'text-align': 'right'}),
         html.Div([dbc.FormText(dcc.Markdown("_Choose the number of words in your password (>= 4 is recommended)_",
@@ -371,7 +378,7 @@ hash_input = html.Div(
         dbc.Input(placeholder="Hash goes here...", type="text",
                   id='hash-password', style={'margin-left': '15px', }),
         html.Div([dbc.Button('Submit', id='submit-button', n_clicks=0, outline=True, color='warning',
-                 style={'margin-top': '15px', 'margin-left': '15px', })], style={'text-align': 'right'}),
+                 style={'margin-top': '15px', 'margin-left': '15px', 'border': 0, 'font-weight': 'bold'})], style={'text-align': 'right'}),
         dbc.FormText(dcc.Markdown(
             "What about _523cf99e800d57d0ff0ac7b97e04ebc2b9b4b263_", style={'margin-left': '15px'})),
     ]
@@ -440,14 +447,19 @@ def output_hash(value):
     [State('hash-password', 'value')])
 def cracking(click, value):
     if click is not None:
-        for word in dictionary:
-            if dictionary_attack(word, value) == True:
-                x = f'The password is: {word}.'
-                return x
-            if word == dictionary[-1]:
-                return 'No password found in dictionary.'
-            else:
-                continue
+        if value is None:
+            return 'Provide a SHA-1 hash...'
+        if value.isspace() is True:
+            return 'Provide a SHA-1 hash...'
+        else:
+            for word in dictionary:
+                if dictionary_attack(word, value) == True:
+                    x = f'The password is: {word}.'
+                    return x
+                if word == dictionary[-1]:
+                    return 'No password found in dictionary.'
+                else:
+                    continue
 
 
 @app.callback(
