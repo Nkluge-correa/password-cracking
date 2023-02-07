@@ -290,7 +290,8 @@ modal_entropy = html.Div(
                                dbc.Input(placeholder="Dummy-Password goes here...",
                               type="password", id='dummy-password'),
                                html.Div([dbc.Card(dbc.CardBody([dcc.Markdown(
-                                   " ", style={'font-size': 24}, id='password-entropy', mathjax=True)]))]), html.Br(),
+                                   " ", style={'font-size': 24, 'overflow-x': 'auto', 'overflow-y': 'hidden'},
+                                   id='password-entropy', mathjax=True)]))]), html.Br(),
                                dcc.Markdown('If you do not belive this page, belive [XKCD](https://xkcd.com/936/)', style={
                                    'font-size': 24, 'text-align': 'center'}), html.Br(),
                                html.Div([html.Img(id='img_1', src=app.get_asset_url('password_strength.png'), height=601, width=740, style={
@@ -343,7 +344,8 @@ card_2 = html.Div(
     [
         dbc.Card(
             dbc.CardBody([
-                dcc.Markdown(" ", id='generated-password', mathjax=True)
+                dcc.Markdown(" ", id='generated-password', mathjax=True, style={'overflow-x': 'auto',
+                                                                                'overflow-y': 'hidden'})
             ])
         ),
     ], style={'margin-left': '15px', 'margin-bottom': '15px'}
