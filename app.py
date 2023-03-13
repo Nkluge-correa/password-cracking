@@ -18,7 +18,7 @@ app.title = 'Password Security 🔓'
 FONT_SIZE = '1rem'
 
 with open('data/dictionary.txt', encoding='utf8') as fp:
-    dictionary = [line.strip() for line in fp]
+    dictionary = tuple([line.strip() for line in fp])
     fp.close()
 
 df = pd.read_csv('data/users_passwords_dump.csv')
@@ -33,7 +33,7 @@ def dictionary_attack(dictionary_word, target_hash):
 
 
 with open('data/words_466k.txt', encoding='utf8') as fp:
-    word_password_bag = [line.strip() for line in fp]
+    word_password_bag = tuple([line.strip() for line in fp])
     fp.close()
 
 
