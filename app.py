@@ -15,11 +15,13 @@ app = dash.Dash(__name__,
 server = app.server
 app.title = 'Password Security 🔓'
 
-with open('dictionary.txt', encoding='utf8') as fp:
+FONT_SIZE = '1rem'
+
+with open('data/dictionary.txt', encoding='utf8') as fp:
     dictionary = [line.strip() for line in fp]
     fp.close()
 
-leak = pd.read_csv('users_passwords_dump.csv')
+df = pd.read_csv('data/users_passwords_dump.csv')
 
 
 def dictionary_attack(dictionary_word, target_hash):
@@ -30,7 +32,7 @@ def dictionary_attack(dictionary_word, target_hash):
         return True
 
 
-with open('words_466k.txt', encoding='utf8') as fp:
+with open('data/words_466k.txt', encoding='utf8') as fp:
     word_password_bag = [line.strip() for line in fp]
     fp.close()
 
@@ -54,15 +56,15 @@ def has_symbol(inputstring):
 leak_table = html.Div(children=[
 
     dash_table.DataTable(
-        data=leak.to_dict(orient='records'),
+        data=df.to_dict(orient='records'),
         columns=[{'id': x, 'name': x, 'presentation': 'markdown'} if x ==
-                 'users' else {'id': x, 'name': x} for x in leak.columns],
+                 'users' else {'id': x, 'name': x} for x in df.columns],
         style_table={'text-align': 'justify', 'text-justify': 'inter-word',
                      'height': '400px', 'overflowY': 'scroll'},
         page_current=0,
         page_size=50,
         style_cell={
-            'text-align': 'justify', 'text-justify': 'inter-word', 'fontSize': 16, 'padding': '10px',
+            'text-align': 'justify', 'text-justify': 'inter-word', 'fontSize': '1rem', 'padding': '10px',
         },
         style_data={
             'whiteSpace': 'normal',
@@ -71,7 +73,7 @@ leak_table = html.Div(children=[
         style_header={
             'fontWeight': 'bold',
             'text-align': 'left',
-            'fontSize': 16
+            'fontSize': '1.5rem'
         },
     ),
 
@@ -79,21 +81,19 @@ leak_table = html.Div(children=[
 
 modal_hash = html.Div(
     [
-        dbc.Button('Hash?', id='info-button', n_clicks=0,
-                   outline=True, color='warning', style={'border': 0,
-                                                         'font-weight': 'bold'}),
+        html.A([html.I(className='bi bi-info-circle'), ' Hash?'],
+               id="hash-info-button", n_clicks=0, className="icon-button", style={'font-size': '1.2rem'}),
+
         dbc.Modal(
             [
                 dbc.ModalHeader(dbc.ModalTitle(dcc.Markdown(
                     '# What is a Hash Function?'))),
                 dbc.ModalBody([dcc.Markdown('''
-                                A [hash function](https://en.wikipedia.org/wiki/Hash_function) is a function that **takes a set of inputs of any arbitrary size and fits them into a table or other data structure that contains fixed-size elements**.
-                                ''', style={'font-size': 24, 'text-align': 'justify',
-                                            'text-justify': 'inter-word'}), html.Br(),
+                                A [hash function](https://en.wikipedia.org/wiki/Hash_function) is a function that takes a set of inputs of any arbitrary size and fits them into a table or other data structure that contains fixed-size elements.
+                                ''', className='modal-body-text-style', style={'font-size': FONT_SIZE}), html.Br(),
                                dcc.Markdown('''
-                                A cryptographic hash function (**CHF**) is a mathematical [algorithm](https://en.wikipedia.org/wiki/Algorithm "Algorithm") that [maps](https://en.wikipedia.org/wiki/Map_(mathematics) "Map (mathematics)") data of an arbitrary size (often called the "_message_") to a [bit array](https://en.wikipedia.org/wiki/Bit_array "Bit array") of a fixed size (the "_[hash value](https://en.wikipedia.org/wiki/Hash_value "Hash value")_", or "_digest_"). It is a [one-way function](https://en.wikipedia.org/wiki/One-way_function "One-way function"), that is, a function for which it is practically infeasible to invert or reverse the computation. This also means that there can be **data-loss** during the hashing process.
-                                ''', style={'font-size': 24, 'text-align': 'justify',
-                                            'text-justify': 'inter-word'}), html.Br(),
+                                A cryptographic hash function (CHF) is a mathematical [algorithm](https://en.wikipedia.org/wiki/Algorithm "Algorithm") that [maps](https://en.wikipedia.org/wiki/Map_(mathematics) "Map (mathematics)") data of an arbitrary size (often called the "_message_") to a [bit array](https://en.wikipedia.org/wiki/Bit_array "Bit array") of a fixed size (the "_[hash value](https://en.wikipedia.org/wiki/Hash_value "Hash value")_", or "_digest_"). It is a [one-way function](https://en.wikipedia.org/wiki/One-way_function "One-way function"), that is, a function for which it is practically infeasible to invert or reverse the computation. This also means that there can be data-loss during the hashing process.
+                                ''', className='modal-body-text-style', style={'font-size': FONT_SIZE}), html.Br(),
                                dcc.Markdown('''
                                ## SHA-1
 
@@ -108,15 +108,13 @@ modal_hash = html.Div(
 
                                 ```
 
-                                ''', style={'font-size': 24, 'text-align': 'center'}), html.Br(),
+                                ''', className='modal-body-text-style', style={'font-size': FONT_SIZE, 'text-align': 'center'}), html.Br(),
                                dcc.Markdown('''
-                                **SHA-1** (_Secure Hash Algorithm 1_) is a cryptographically **broken** but still widely used [hash function](https://en.wikipedia.org/wiki/Hash_function "Hash function") which takes an input and produces a 160-bit (20-byte) hash value known as a [message digest](https://en.wikipedia.org/wiki/Message_digest "Message digest") - typically rendered as a [hexadecimal](https://en.wikipedia.org/wiki/Hexadecimal "Hexadecimal") number, 40 digits long. It was designed by the United States [National Security Agency](https://en.wikipedia.org/wiki/National_Security_Agency "National Security Agency"), and is a U.S. [Federal Information Processing Standard](https://en.wikipedia.org/wiki/Federal_Information_Processing_Standard "Federal Information Processing Standard").
-                                ''', style={'font-size': 24, 'text-align': 'justify',
-                                            'text-justify': 'inter-word'}), html.Br(),
+                                SHA-1 (_Secure Hash Algorithm 1_) is a cryptographically broken but still widely used [hash function](https://en.wikipedia.org/wiki/Hash_function "Hash function") which takes an input and produces a 160-bit (20-byte) hash value known as a [message digest](https://en.wikipedia.org/wiki/Message_digest "Message digest") - typically rendered as a [hexadecimal](https://en.wikipedia.org/wiki/Hexadecimal "Hexadecimal") number, 40 digits long. It was designed by the United States [National Security Agency](https://en.wikipedia.org/wiki/National_Security_Agency "National Security Agency"), and is a U.S. [Federal Information Processing Standard](https://en.wikipedia.org/wiki/Federal_Information_Processing_Standard "Federal Information Processing Standard").
+                                ''', className='modal-body-text-style', style={'font-size': FONT_SIZE}), html.Br(),
                                dcc.Markdown('''
                                  In this example of attack, we are trying to break a SHA-1 hash, as a mere example on password safety (_Do not do this against passwords you do not own!_).
-                                 ''', style={'font-size': 24, 'text-align': 'justify',
-                                             'text-justify': 'inter-word'}), html.Br(),
+                                 ''', className='modal-body-text-style', style={'font-size': FONT_SIZE}), html.Br(),
                                dcc.Markdown('''
                                
                                ## Leaks ☣️
@@ -125,17 +123,14 @@ modal_hash = html.Div(
 
                                '''),
                                dcc.Markdown('''
-                                User-password often *leak* onto the Internet. **Leaked data frequently includes hashed passwords**, like the infamous [RockYou data breach](https://en.wikipedia.org/wiki/RockYou#:~:text=In%20December%202009%2C%20RockYou%20experienced,%2Dyear%2Dold%20SQL%20vulnerability.). **RockYou** was a company that developed widgets for [MySpace](https://en.wikipedia.org/wiki/MySpace "MySpace") and implemented applications for various social networks (e.g., Facebook). In December 2009, RockYou experienced a data breach resulting in the exposure of over 32 million user accounts. This resulted from storing user data in an unencrypted database (including user passwords in plain text instead of using a [cryptographic hash](https://en.wikipedia.org/wiki/Cryptographic_hash "Cryptographic hash")) and not patching a ten-year-old [SQL](https://en.wikipedia.org/wiki/SQL "SQL") vulnerability.
-                                ''', style={'font-size': 24, 'text-align': 'justify',
-                                            'text-justify': 'inter-word'}), html.Br(),
+                                User-password often _leak_ onto the Internet. Leaked data frequently includes hashed passwords, like the infamous [RockYou data breach](https://en.wikipedia.org/wiki/RockYou#:~:text=In%20December%202009%2C%20RockYou%20experienced,%2Dyear%2Dold%20SQL%20vulnerability.). RockYou was a company that developed widgets for [MySpace](https://en.wikipedia.org/wiki/MySpace "MySpace") and implemented applications for various social networks (e.g., Facebook). In December 2009, RockYou experienced a data breach resulting in the exposure of over 32 million user accounts. This resulted from storing user data in an unencrypted database (including user passwords in plain text instead of using a [cryptographic hash](https://en.wikipedia.org/wiki/Cryptographic_hash "Cryptographic hash")) and not patching a ten-year-old [SQL](https://en.wikipedia.org/wiki/SQL "SQL") vulnerability.
+                                ''', className='modal-body-text-style', style={'font-size': FONT_SIZE}), html.Br(),
                                dcc.Markdown('''
-                                This leak, and many others, help attackers create "_dictionary's_" that can be use to help password-cracking. For example, the [RockYou2021](https://github.com/ohmybahgosh/RockYou2021.txt) has **100 GB** of plain leaked passwords ready to be used in [dictionary attacks](https://en.wikipedia.org/wiki/Dictionary_attack).
-                                ''', style={'font-size': 24, 'text-align': 'justify',
-                                            'text-justify': 'inter-word'}), html.Br(),
+                                This leak, and many others, help attackers create "_dictionary's_" that can be use to help password-cracking. For example, the [RockYou2021](https://github.com/ohmybahgosh/RockYou2021.txt) has 100 GB of plain leaked passwords ready to be used in [dictionary attacks](https://en.wikipedia.org/wiki/Dictionary_attack).
+                                ''', className='modal-body-text-style', style={'font-size': FONT_SIZE}), html.Br(),
                                dcc.Markdown('''
-                                Below you find a **fake**, and **totally fabricated**, leak with (**fake**) user names from a (**non-existent**) website/server that at least had the *conscience to encrypt its users' passwords*. But they did it with a very weak hash (by contemporary encryption and cyber security standards): **[SHA-1](https://crypto.stackexchange.com/questions/3690/why-is-sha-1-considered-broken)**. *Shall we try to break any of them?*
-                                ''', style={'font-size': 24, 'text-align': 'justify',
-                                            'text-justify': 'inter-word'}), html.Br(),
+                                Below you find a fake, and totally fabricated, leak with (fake) user names from a (non-existent) website/server that at least had the _conscience to encrypt its users' passwords_. But they did it with a very weak hash (by contemporary encryption and cyber security standards): [SHA-1](https://crypto.stackexchange.com/questions/3690/why-is-sha-1-considered-broken). _Shall we try to break any of them?_
+                                ''', className='modal-body-text-style', style={'font-size': FONT_SIZE}), html.Br(),
                                leak_table,
                                ]),
                 dbc.ModalFooter(
@@ -159,24 +154,20 @@ modal_hash = html.Div(
 
 modal_trust = html.Div(
     [
-        dbc.Button('Password Cracking?', id='trust-button',
-                   n_clicks=0, outline=True, color='warning', style={'border': 0,
-                                                                     'font-weight': 'bold'}),
+        html.A([html.I(className='bi bi-info-circle'), ' Password Cracking?'],
+               id="trust-button", n_clicks=0, className="icon-button", style={'font-size': '1.2rem'}),
         dbc.Modal(
             [
                 dbc.ModalHeader(dbc.ModalTitle(dcc.Markdown(
                     '# How do you do this?'), style={})),
                 dbc.ModalBody([dcc.Markdown('''
-                                In [cryptanalysis](https://en.wikipedia.org/wiki/Cryptanalysis) and [computer security](https://en.wikipedia.org/wiki/Computer_security "Computer security"), **password cracking** is the process of recovering passwords from data that has been stored in or transmitted by a computer syste  in scrambled form. A common approach ([brute-force attack](https://en.wikipedia.org/wiki/Brute-force_attack "Brute-force attack")) is to repeatedly try guesses for the password and to check them against an available [cryptographic hash](https://en.wikipedia.org/wiki/Cryptographic_hash_function "Cryptographic hash function") of the password.
-                                ''', style={'font-size': 24, 'text-align': 'justify',
-                                            'text-justify': 'inter-word'}), html.Br(),
+                                In [cryptanalysis](https://en.wikipedia.org/wiki/Cryptanalysis) and [computer security](https://en.wikipedia.org/wiki/Computer_security "Computer security"), password cracking is the process of recovering passwords from data that has been stored in or transmitted by a computer syste  in scrambled form. A common approach ([brute-force attack](https://en.wikipedia.org/wiki/Brute-force_attack "Brute-force attack")) is to repeatedly try guesses for the password and to check them against an available [cryptographic hash](https://en.wikipedia.org/wiki/Cryptographic_hash_function "Cryptographic hash function") of the password.
+                                ''', className='modal-body-text-style', style={'font-size': FONT_SIZE}), html.Br(),
                                dcc.Markdown('''
-                                What we are doing here is a [dictionary attack](https://en.wikipedia.org/wiki/Dictionary_attack). *A dictionary attack is based on trying all the strings in a pre-arranged listing.* I (the programmer behind this page) am using a dictionary of my own making, containing around **3.7 million** words and possible passwords (**not even close to the monster that [RockYou2021](https://github.com/ohmybahgosh/RockYou2021.txt) is**).
-                                ''', style={'font-size': 24, 'text-align': 'justify',
-                                            'text-justify': 'inter-word'}), html.Br(),
-                               dcc.Markdown('The program is basically:', style={
-                                            'font-size': 24, 'text-align': 'justify',
-                                            'text-justify': 'inter-word'}), html.Br(),
+                                What we are doing here is a [dictionary attack](https://en.wikipedia.org/wiki/Dictionary_attack). _A dictionary attack is based on trying all the strings in a pre-arranged listing._ I (the programmer behind this page) am using a dictionary of my own making, containing around 3.7 million words and possible passwords (not even close to the monster that [RockYou2021](https://github.com/ohmybahgosh/RockYou2021.txt) is).
+                                ''', className='modal-body-text-style', style={'font-size': FONT_SIZE}), html.Br(),
+                               dcc.Markdown('The program is basically:', className='modal-body-text-style', style={
+                                            'font-size': FONT_SIZE}), html.Br(),
                                dcc.Markdown('''
                                 ````python
 
@@ -187,19 +178,16 @@ modal_trust = html.Div(
                                         continue
 
                                 ```` 
-                                ''', style={'font-size': 24, 'text-align': 'justify',
-                                            'text-justify': 'inter-word'}), html.Br(),
+                                ''', className='modal-body-text-style', style={'font-size': FONT_SIZE}), html.Br(),
                                dcc.Markdown('''
-                                The code for this implementation can be accessed on [GitHub](https://github.com/Nkluge-correa), but there are many other tools ready for this kind of attack (many come pre-installed on [Kali-Linux](https://www.kali.org/)). However, remember that: *using a password cracking method to access one's own password is legal*. **Using these methods or tools to gain access to someone else's password can lead to criminal charges.**
-                                ''', style={'font-size': 24, 'text-align': 'justify',
-                                            'text-justify': 'inter-word'}), html.Br(),
+                                The code for this implementation can be accessed on [GitHub](https://github.com/Nkluge-correa), but there are many other tools ready for this kind of attack (many come pre-installed on [Kali-Linux](https://www.kali.org/)). However, remember that: _using a password cracking method to access one's own password is legal_. Using these methods or tools to gain access to someone else's password can lead to criminal charges.
+                                ''', className='modal-body-text-style', style={'font-size': FONT_SIZE}), html.Br(),
                                dcc.Markdown('''
                                  "_I do not believe you are cracking these passwords! You are storing these words whiteout hashing! The cake is a lie!_"
-                                 ''', style={'font-size': 24, 'text-align': 'center'}), html.Br(),
+                                 ''', className='modal-body-text-style', style={'font-size': FONT_SIZE, 'text-align': 'center'}), html.Br(),
                                dcc.Markdown('''
-                                Use any other online [SHA-1](http://www.sha1-online.com/) generator and bring a candidate password-hash here. If your password is **strong**, *and not in my dictionary*, you win!
-                                ''', style={'font-size': 24, 'text-align': 'justify',
-                                            'text-justify': 'inter-word'}), html.Br(),
+                                Use any other online [SHA-1](http://www.sha1-online.com/) generator and bring a candidate password-hash here. If your password is strong, _and not in my dictionary_, you win!
+                                ''', className='modal-body-text-style', style={'font-size': FONT_SIZE}), html.Br(),
                                ]),
                 dbc.ModalFooter(
                     html.Div([dbc.Button(html.I(className="bi bi-x-circle"), id='close-body-scroll-3', className='ms-auto',
@@ -222,24 +210,22 @@ modal_trust = html.Div(
 
 modal_entropy = html.Div(
     [
-        html.Div([dbc.Button('Password Security', id='entropy-button', n_clicks=0, outline=True,
-                 color='warning', style={'border': 0,
-                                         'font-weight': 'bold'})], style={'display': 'inline-block', 'text-align': 'left'}),
+        html.A([html.I(className='bi bi-info-circle'), ' Password Security'],
+               id="entropy-button", n_clicks=0, className="icon-button", style={'font-size': '1.2rem', 'display': 'inline-block', 'text-align': 'left'}),
+
         dbc.Modal(
             [
                 dbc.ModalHeader(dbc.ModalTitle(dcc.Markdown(
                     '# How to create good passwords?'), style={})),
                 dbc.ModalBody([dcc.Markdown('''
                                 Here are a couple of basic instructions on how to create a "_not-super-easy-to-break_" password:
-                                ''', style={'font-size': 24, 'text-align': 'justify',
-                                            'text-justify': 'inter-word'}), html.Br(),
+                                ''', className='modal-body-text-style', style={'font-size': FONT_SIZE}), html.Br(),
                                dcc.Markdown('''
-                                1.  **Never use personal information**: You shouldn't reference personal information. You would not believe how many examples of words + dates/numbers are available. Also, you could get [phished](https://en.wikipedia.org/wiki/Phishing).
-                                2.  **Create passwords that have big entropy levels**: *I'll explain password entropy bellow*.
-                                3.  **Passwords should be long**: Safe passwords are at least 16 characters long.
-                                4.  **Never repeat passwords:** Reusing the same password for different accounts puts you at risk of  [credential stuffing](https://en.wikipedia.org/wiki/Credential_stuffing)  attacks. Create one master password (a **really good one**) and use it to lock your other passwors in a [password manager](https://en.wikipedia.org/wiki/Password_manager).
-                                ''', style={'font-size': 24, 'text-align': 'justify',
-                                            'text-justify': 'inter-word'}), html.Br(),
+                                1.  Never use personal information: You shouldn't reference personal information. You would not believe how many examples of words + dates/numbers are available. Also, you could get [phished](https://en.wikipedia.org/wiki/Phishing).
+                                2.  Create passwords that have big entropy levels: _I'll explain password entropy bellow_.
+                                3.  Passwords should be long: Safe passwords are at least 16 characters long.
+                                4.  Never repeat passwords: Reusing the same password for different accounts puts you at risk of  [credential stuffing](https://en.wikipedia.org/wiki/Credential_stuffing)  attacks. Create one master password (a really good one) and use it to lock your other passwors in a [password manager](https://en.wikipedia.org/wiki/Password_manager).
+                                ''', className='modal-body-text-style', style={'font-size': FONT_SIZE}), html.Br(),
                                dcc.Markdown('''
                                
                                ## Password Entropy
@@ -248,32 +234,26 @@ modal_entropy = html.Div(
 
                                '''),
                                dcc.Markdown('''
-                                In 2019, the United Kingdom's [NCSC](https://en.wikipedia.org/wiki/National_Cyber_Security_Centre_(United_Kingdom)) analyzed public databases of breached accounts **to see which words, phrases, and strings people used**. Top of the list was `123456`, appearing in more than **23 million passwords**. The second-most popular string, `123456789`, while the top five included `qwerty`, `password` and `1111111`. As you can see, people do not give much credit to how easy it is to crack trivial passwords like these. To avoid getting your password used as another sample in a dictionary attack, you need to make your password stronger.
-                                ''', style={'font-size': 24, 'text-align': 'justify',
-                                            'text-justify': 'inter-word'}), html.Br(),
+                                In 2019, the United Kingdom's [NCSC](https://en.wikipedia.org/wiki/National_Cyber_Security_Centre_(United_Kingdom)) analyzed public databases of breached accounts to see which words, phrases, and strings people used. Top of the list was `123456`, appearing in more than 23 million passwords. The second-most popular string, `123456789`, while the top five included `qwerty`, `password` and `1111111`. As you can see, people do not give much credit to how easy it is to crack trivial passwords like these. To avoid getting your password used as another sample in a dictionary attack, you need to make your password stronger.
+                                ''', className='modal-body-text-style', style={'font-size': FONT_SIZE}), html.Br(),
                                dcc.Markdown('''
-                                **Password strength**  is a measure of the effectiveness of a  [password] against guessing or  [brute-force attacks](https://en.wikipedia.org/wiki/Brute-force_attack "Brute-force attack"). In its usual form, it estimates how many trials an attacker who does not have direct access to the password would need, on average, to guess it correctly. 
-                                ''', style={'font-size': 24, 'text-align': 'justify',
-                                            'text-justify': 'inter-word'}), html.Br(),
+                                Password strength  is a measure of the effectiveness of a  [password] against guessing or  [brute-force attacks](https://en.wikipedia.org/wiki/Brute-force_attack "Brute-force attack"). In its usual form, it estimates how many trials an attacker who does not have direct access to the password would need, on average, to guess it correctly. 
+                                ''', className='modal-body-text-style', style={'font-size': FONT_SIZE}), html.Br(),
                                dcc.Markdown('''
                                 It is usual in the computer industry to specify password strength in terms of [information entropy](https://en.wikipedia.org/wiki/Information_entropy "Information entropy"), which is measured in [bits](https://en.wikipedia.org/wiki/Bit "Bit"), being a concept related to [Shannon's entropy measure](https://en.wikipedia.org/wiki/Entropy_(information_theory)). 
-                                ''', style={'font-size': 24, 'text-align': 'justify',
-                                            'text-justify': 'inter-word'}), html.Br(),
+                                ''', className='modal-body-text-style', style={'font-size': FONT_SIZE}), html.Br(),
                                dcc.Markdown('''
-                                Instead of the number of guesses needed to find the password with certainty, the [base-2 logarithm](https://en.wikipedia.org/wiki/Binary_logarithm "Binary logarithm") of that number is given, which is commonly referred to as the number of "_entropy bits_" in a password. A password with an entropy of 42 bits calculated in this way would be as strong as a string of 42 bits chosen randomly. Put another way, a password with an entropy of 42 bits would require 242 (4,398,046,511,104) attempts to exhaust all possibilities during a [brute force search](https://en.wikipedia.org/wiki/Brute_force_search "Brute force search"). Thus, increasing the entropy of the password by one bit doubles the number of guesses required, making an attacker's task twice as difficult. On average, ***an attacker will have to try half the possible number of passwords before finding the correct one.***
-                                ''', style={'font-size': 24, 'text-align': 'justify',
-                                            'text-justify': 'inter-word'}), html.Br(),
-                               dcc.Markdown('You can calculate your password entropy by this equation:', style={
-                                            'font-size': 24, 'text-align': 'justify',
-                                            'text-justify': 'inter-word'}), html.Br(),
+                                Instead of the number of guesses needed to find the password with certainty, the [base-2 logarithm](https://en.wikipedia.org/wiki/Binary_logarithm "Binary logarithm") of that number is given, which is commonly referred to as the number of "_entropy bits_" in a password. A password with an entropy of 42 bits calculated in this way would be as strong as a string of 42 bits chosen randomly. Put another way, a password with an entropy of 42 bits would require 242 (4,398,046,511,104) attempts to exhaust all possibilities during a [brute force search](https://en.wikipedia.org/wiki/Brute_force_search "Brute force search"). Thus, increasing the entropy of the password by one bit doubles the number of guesses required, making an attacker's task twice as difficult. On average, _an attacker will have to try half the possible number of passwords before finding the correct one._
+                                ''', className='modal-body-text-style', style={'font-size': FONT_SIZE}), html.Br(),
+                               dcc.Markdown('You can calculate your password entropy by this equation:',
+                                            className='modal-body-text-style', style={'font-size': FONT_SIZE}), html.Br(),
                                dcc.Markdown('''
 
                                 $$E = L \\times log2(R)$$
         
-                                ''', style={'font-size': 24, 'text-align': 'center'}, mathjax=True), html.Br(),
-                               dcc.Markdown('where:', style={
-                                            'font-size': 24, 'text-align': 'justify',
-                                            'text-justify': 'inter-word'}), html.Br(),
+                                ''', className='modal-body-text-style', style={'font-size': FONT_SIZE, 'text-align': 'center'}, mathjax=True), html.Br(),
+                               dcc.Markdown('where:', className='modal-body-text-style',
+                                            style={'font-size': FONT_SIZE}), html.Br(),
                                dcc.Markdown('''
                                 - $E$ = password entropy;
                                 - $L$ = Password length, i.e., the number of characters in the password;
@@ -287,18 +267,16 @@ modal_entropy = html.Div(
                                 - $60 - 127$ bits = Strong;
                                 - $+ 128$ bits = Very Strong.
 
-                                ''', style={'font-size': 24, 'text-align': 'justify',
-                                            'text-justify': 'inter-word'}, mathjax=True), html.Br(),
+                                ''', className='modal-body-text-style', style={'font-size': FONT_SIZE}, mathjax=True), html.Br(),
                                dbc.Label(dcc.Markdown(
-                                   'Check your password strength on the cell bellow!', style={'font-size': 24, 'text-align': 'justify',
-                                                                                              'text-justify': 'inter-word'})),
+                                   'Check your password strength on the cell bellow!', className='modal-body-text-style', style={'font-size': FONT_SIZE})),
                                dbc.Input(placeholder="Dummy-Password goes here...",
                               type="password", id='dummy-password'),
                                html.Div([dbc.Card(dbc.CardBody([dcc.Markdown(
                                    " ", style={'font-size': 24, 'overflow-x': 'auto', 'overflow-y': 'hidden'},
                                    id='password-entropy', mathjax=True)]))]), html.Br(),
-                               dcc.Markdown('If you do not belive this page, belive [XKCD](https://xkcd.com/936/)', style={
-                                   'font-size': 24, 'text-align': 'center'}), html.Br(),
+                               dcc.Markdown('If you do not belive this page, belive [XKCD](https://xkcd.com/936/)',
+                                            className='modal-body-text-style', style={'font-size': FONT_SIZE}), html.Br(),
                                html.Div([html.Img(id='img_1', src=app.get_asset_url('password_strength.png'), height=601, width=740, style={
                                    'height': '50%', 'width': '50%'})], style={'textAlign': 'center'})
 
@@ -316,7 +294,7 @@ modal_entropy = html.Div(
         ),
         html.Div([dbc.Button('Generate Password', id='generate-password-button', n_clicks=0, outline=True,
                  color='warning', style={'border': 0,
-                                         'font-weight': 'bold'})], style={'display': 'inline-block', 'text-align': 'right', 'margin-left': '15px'}),
+                                         'font-weight': 'bold'})], style={'display': 'inline-block', 'text-align': 'right', 'margin-top': '15px'}),
         html.Div([daq.NumericInput(min=2, max=10, value=4, id='generate-password-number',
                  style={'margin-left': '15px'})], style={'display': 'inline-block', 'text-align': 'right'}),
         html.Div([dbc.FormText(dcc.Markdown("_Choose the number of words in your password (>= 4 is recommended)_",
@@ -360,7 +338,7 @@ card_2 = html.Div(
 
 password_input = html.Div(
     [
-        dbc.Label(dcc.Markdown("## Let's first hash your password",
+        dbc.Label(dcc.Markdown("## `Hash your password...`",
                   style={'margin-left': '15px', })),
         modal_hash,
         dbc.Input(placeholder="Password goes here...", type="password",
@@ -372,7 +350,7 @@ password_input = html.Div(
 
 hash_input = html.Div(
     [
-        dbc.Label(dcc.Markdown("## Submit your hash here",
+        dbc.Label(dcc.Markdown("## `Submit your hash...`",
                   style={'margin-left': '15px'})),
         modal_trust,
         dbc.Input(placeholder="Hash goes here...", type="text",
@@ -386,7 +364,7 @@ hash_input = html.Div(
 
 generator_input = html.Div(
     [
-        dbc.Label(dcc.Markdown("## UPGRADE YOUR PASSWORD! 🔒",
+        dbc.Label(dcc.Markdown("## `Upgrade your password ...`",
                   style={'margin-left': '15px'})), html.Br(),
         modal_entropy, card_2
     ]
@@ -407,10 +385,19 @@ badges = html.Span([
 app.layout = dbc.Container(
     fluid=False,
     children=[
-        html.H1('Dictionary Attack & Password Generator 🔓', style={'textAlign': 'center',
-                                                                   'margin-top': '20px'}),
-        html.Div([badges], style={
-                 'textAlign': 'center', 'margin-top': '10px', 'margin-bottom': '10px'}),
+        html.Div([dcc.Markdown('# `Dictionary Attack & Password Generator`', className='title-style'),
+                  html.Img(src=dash.get_asset_url(
+                      'lock.svg'), height="50px", className='title-icon-style')],
+                 className='title-div'),
+        html.Div([
+            html.Div([
+                dcc.Markdown('''
+                        _Here you can find a “Password Security” dash. In it you will find information on how certain types of attacks (Password Cracking) can be managed, which tools attackers use, how to create “entropically” secure passwords, and how you can measure your own password security using some tools imported from Information Theory._ 
+
+                        ⚠️ _This application has been developed for educational purposes only. Passwords and broken hashes have been created for this specific purpose. SHA-1 is deprecated and should not be used for security purposes. Using password cracking methods to access your own password is lawful. Using password cracking methods to gain access to someone else's password may lead to criminal charges_. ⚠️
+                        ''', className='page-intro')
+            ], className='page-intro-inner-div'),
+        ], className='page-intro-outer-div'),
         html.Hr(),
         dbc.Row([
             dbc.Col([
@@ -422,6 +409,9 @@ app.layout = dbc.Container(
             ], md=10),
         ], justify='center'),
         html.Hr(),
+        html.Div([
+            html.Div([badges], className='badges'),
+        ], className='badges-div'),
     ],
 )
 
@@ -530,7 +520,7 @@ def generate_password(click, value):
 @app.callback(
     Output('modal-body-scroll-2', 'is_open'),
     [
-        Input('info-button', 'n_clicks'),
+        Input('hash-info-button', 'n_clicks'),
         Input('close-body-scroll-2', 'n_clicks'),
     ],
     [State('modal-body-scroll-2', 'is_open')],
