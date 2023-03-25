@@ -1,7 +1,7 @@
 import hashlib
 
-output_file_path = 'out.txt'
-input_file_path = 'dictionary.txt'
+output_file_path = 'data/new_dictionary.txt'
+input_file_path = 'data/dictionary.txt'
 
 completed_lines_hash = set()
 
@@ -12,4 +12,5 @@ for line in open(input_file_path, 'r'):
     if hashValue not in completed_lines_hash:
         output_file.write(line)
         completed_lines_hash.add(hashValue)
+
 output_file.close()

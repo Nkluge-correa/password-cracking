@@ -11,6 +11,17 @@ with open('dictionary.txt', encoding='utf8') as file_in:
 
 
 def dictionary_attack(dictionary_word, target_hash):
+    """
+    Check if a given dictionary word matches a target hash 
+    using the SHA-1 algorithm.
+
+    Args:
+        - dictionary_word (str): A string representing the dictionary word to check.
+        - target_hash (str): A string representing the target hash to compare against.
+
+    Returns:
+        - bool: True if the dictionary word's hash matches the target hash; False otherwise.
+    """
     pass_bytes = dictionary_word.encode('utf-8')
     pass_hash = sha1(pass_bytes)
     digest = pass_hash.hexdigest()
@@ -22,6 +33,21 @@ leak = pd.read_excel('users_passwords_dump.xlsx')
 
 
 def cracking(leak):
+    """
+    Try to crack the leaked passwords using a dictionary attack.
+
+    Parameters:
+    -----------
+    - leak (dict): A dictionary with 'users' and 'passwords' keys, where 
+        'users' is a list of strings with the usernames and 'passwords' 
+        is a list of strings with the hashed passwords.
+
+    Returns:
+    -----------
+        This function doesn't return anything. It prints the username and the 
+        cracked password for each password hash in the input dictionary 
+        that can be cracked using a dictionary attack.
+    """
     print('Cracking...')
     for word in dictionary:
         for i in range(0, len(leak)):
@@ -40,6 +66,18 @@ with open('words_466k.txt', encoding='utf8') as file_in:
 
 
 def generate_password():
+    """
+    This function generates a password consisting of a number of words. 
+    The user is prompted to choose the number of words. The function selects 
+    the words randomly from a list of possible words. The function prints 
+    the password and information about the password's strength, including 
+    its entropy, the space of possible passwords, and the number of operations 
+    required to brute-force the password.
+
+    Returns:
+    ---------
+        None
+    """
     valid = False
     while not valid:
         try:

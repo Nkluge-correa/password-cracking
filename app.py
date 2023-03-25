@@ -25,6 +25,17 @@ df = pd.read_csv('data/users_passwords_dump.csv')
 
 
 def dictionary_attack(dictionary_word, target_hash):
+    """
+    Check if a given dictionary word matches a target hash 
+    using the SHA-1 algorithm.
+
+    Args:
+        - dictionary_word (str): A string representing the dictionary word to check.
+        - target_hash (str): A string representing the target hash to compare against.
+
+    Returns:
+        - bool: True if the dictionary word's hash matches the target hash; False otherwise.
+    """
     pass_bytes = dictionary_word.encode('utf-8')
     pass_hash = sha1(pass_bytes)
     digest = pass_hash.hexdigest()
@@ -38,18 +49,54 @@ with open('data/words_466k.txt', encoding='utf8') as fp:
 
 
 def has_numbers(inputstring):
+    """
+    Check if a string contains any numerical digits.
+
+    Args:
+        inputstring (str): The string to be checked.
+
+    Returns:
+        bool: True if the string contains at least one numerical digit, False otherwise.
+    """
     return any(char.isdigit() for char in inputstring)
 
 
 def has_lower(inputstring):
+    """
+    Check if a string contains any lowercase characters.
+
+    Args:
+        inputstring (str): The string to be checked.
+
+    Returns:
+        bool: True if the string contains at least one lowercase character, False otherwise.
+    """
     return any(char.islower() for char in inputstring)
 
 
 def has_upper(inputstring):
+    """
+    Check if a string contains any uppercase characters.
+
+    Args:
+        inputstring (str): The string to be checked.
+
+    Returns:
+        bool: True if the string contains at least one uppercase character, False otherwise.
+    """
     return any(char.isupper() for char in inputstring)
 
 
 def has_symbol(inputstring):
+    """
+    Check if a string contains any special characters or symbols.
+
+    Args:
+        inputstring (str): The string to be checked.
+
+    Returns:
+        bool: True if the string contains at least one special character, False otherwise.
+    """
     return any(not c.isalnum() for c in inputstring)
 
 
