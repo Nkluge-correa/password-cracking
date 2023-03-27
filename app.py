@@ -193,7 +193,6 @@ modal_hash = html.Div(
         ),
     ], style={
         'margin-left': '15px',
-        'margin-right': '50px',
         'margin-bottom': '15px'
     },
 
@@ -249,7 +248,6 @@ modal_trust = html.Div(
         ),
     ], style={
         'margin-left': '15px',
-        'margin-right': '50px',
         'margin-bottom': '15px'
     },
 
@@ -258,7 +256,7 @@ modal_trust = html.Div(
 modal_entropy = html.Div(
     [
         html.A([html.I(className='bi bi-info-circle'), ' Password Security'],
-               id="entropy-button", n_clicks=0, className="icon-button", style={'font-size': '1.2rem', 'display': 'inline-block', 'text-align': 'left'}),
+               id="entropy-button", n_clicks=0, className="icon-button", style={'font-size': '1.2rem'}),
 
         dbc.Modal(
             [
@@ -339,16 +337,12 @@ modal_entropy = html.Div(
             fullscreen=True,
             is_open=False,
         ),
-        html.Div([dbc.Button('Generate Password', id='generate-password-button', n_clicks=0, outline=False,
-                 color='warning', style={'border': 0,
-                                         'font-weight': 'bold'})], style={'display': 'inline-block', 'text-align': 'right', 'margin-top': '15px'}),
-        html.Div([daq.NumericInput(min=2, max=10, value=4, id='generate-password-number',
-                 style={'margin-left': '15px'})], style={'display': 'inline-block', 'text-align': 'right'}),
+        html.Div([daq.NumericInput(min=2, max=10, value=2, id='generate-password-number',
+                 style={'margin-left': '15px'})], style={'display': 'inline-block', 'margin-top': '15px'}),
         html.Div([dbc.FormText(dcc.Markdown("_Choose the number of words in your password (>= 4 is recommended)_",
-                 style={'margin-left': '15px', }))], style={'display': 'inline-block', 'text-align': 'right'})
+                 style={'margin-left': '15px', }))], style={'display': 'inline-block', 'margin-top': '15px'}),
     ], style={
         'margin-left': '15px',
-        'margin-right': '150px',
         'margin-bottom': '15px',
     },
 
@@ -413,7 +407,9 @@ generator_input = html.Div(
     [
         dbc.Label(dcc.Markdown("## `Upgrade your password ...`",
                   style={'margin-left': '15px'})), html.Br(),
-        modal_entropy, card_2
+        modal_entropy, card_2,
+        html.Div([dbc.Button('Generate', id='generate-password-button', n_clicks=0, outline=False,
+                             color='warning', style={'margin-top': '15px', 'margin-left': '15px', 'border': 0, 'font-weight': 'bold'})], style={'text-align': 'right'}),
     ]
 )
 
