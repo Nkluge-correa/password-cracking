@@ -182,8 +182,8 @@ modal_hash = html.Div(
                                ]),
                 dbc.ModalFooter(
                     html.Div([dbc.Button(html.I(className="bi bi-x-circle"), id='close-body-scroll-2', className='ms-auto',
-                             n_clicks=0, color='warning', outline=True, style={'border': 0,
-                                                                               'font-weight': 'bold'})], style={'display': 'inline-block'})
+                             n_clicks=0, color='warning', outline=False, style={'border': 0,
+                                                                                'font-weight': 'bold'})], style={'display': 'inline-block'})
                 ),
             ],
             id='modal-body-scroll-2',
@@ -238,8 +238,8 @@ modal_trust = html.Div(
                                ]),
                 dbc.ModalFooter(
                     html.Div([dbc.Button(html.I(className="bi bi-x-circle"), id='close-body-scroll-3', className='ms-auto',
-                             n_clicks=0, color='warning', outline=True, style={'border': 0,
-                                                                               'font-weight': 'bold'})], style={'display': 'inline-block'})
+                             n_clicks=0, color='warning', outline=False, style={'border': 0,
+                                                                                'font-weight': 'bold'})], style={'display': 'inline-block'})
                 ),
             ],
             id='modal-body-scroll-3',
@@ -320,7 +320,7 @@ modal_entropy = html.Div(
                                dbc.Input(placeholder="Dummy-Password goes here...",
                               type="password", id='dummy-password'),
                                html.Div([dbc.Card(dbc.CardBody([dcc.Markdown(
-                                   " ", style={'font-size': 24, 'overflow-x': 'auto', 'overflow-y': 'hidden'},
+                                   " ", style={'font-size': FONT_SIZE, 'overflow-x': 'auto', 'overflow-y': 'hidden'},
                                    id='password-entropy', mathjax=True)]))]), html.Br(),
                                dcc.Markdown('If you do not belive this page, belive [XKCD](https://xkcd.com/936/)',
                                             className='modal-body-text-style', style={'font-size': FONT_SIZE}), html.Br(),
@@ -330,8 +330,8 @@ modal_entropy = html.Div(
                                ]),
                 dbc.ModalFooter(
                     html.Div([dbc.Button(html.I(className="bi bi-x-circle"), id='close-body-scroll-4', className='ms-auto',
-                             n_clicks=0, color='warning', outline=True, style={'border': 0,
-                                                                               'font-weight': 'bold'})], style={'display': 'inline-block'})
+                             n_clicks=0, color='warning', outline=False, style={'border': 0,
+                                                                                'font-weight': 'bold'})], style={'display': 'inline-block'})
                 ),
             ],
             id='modal-body-scroll-4',
@@ -339,7 +339,7 @@ modal_entropy = html.Div(
             fullscreen=True,
             is_open=False,
         ),
-        html.Div([dbc.Button('Generate Password', id='generate-password-button', n_clicks=0, outline=True,
+        html.Div([dbc.Button('Generate Password', id='generate-password-button', n_clicks=0, outline=False,
                  color='warning', style={'border': 0,
                                          'font-weight': 'bold'})], style={'display': 'inline-block', 'text-align': 'right', 'margin-top': '15px'}),
         html.Div([daq.NumericInput(min=2, max=10, value=4, id='generate-password-number',
@@ -402,7 +402,7 @@ hash_input = html.Div(
         modal_trust,
         dbc.Input(placeholder="Hash goes here...", type="text",
                   id='hash-password', style={'margin-left': '15px', }),
-        html.Div([dbc.Button('Submit', id='submit-button', n_clicks=0, outline=True, color='warning',
+        html.Div([dbc.Button('Submit', id='submit-button', n_clicks=0, outline=False, color='warning',
                  style={'margin-top': '15px', 'margin-left': '15px', 'border': 0, 'font-weight': 'bold'})], style={'text-align': 'right'}),
         dbc.FormText(dcc.Markdown(
             "What about _523cf99e800d57d0ff0ac7b97e04ebc2b9b4b263_", style={'margin-left': '15px'})),
