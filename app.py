@@ -414,13 +414,7 @@ generator_input = html.Div(
 )
 
 badges = html.Span([
-    dbc.Badge([html.I(className="bi bi-heart-fill"), "  Open-Source"], href="https://github.com/Nkluge-correa/password_cracking_dash",
-              color="dark", className="text-decoration-none", style={'margin-right': '5px'}),
-    dbc.Badge([html.I(className="bi bi-bank"), "  AIRES at PUCRS"], href="https://en.airespucrs.org/",
-              color="dark", className="text-decoration-none", style={'margin-right': '5px'}),
-    dbc.Badge([html.I(className="bi bi-filetype-py"), "  Made with Python"], href="https://www.python.org/",
-              color="dark", className="text-decoration-none", style={'margin-right': '5px'}),
-    dbc.Badge([html.I(className="bi bi-github"), "  Nkluge-correa"], href="https://nkluge-correa.github.io/",
+    dbc.Badge([html.I(className="bi bi-github"), "Nkluge-correa"], href="https://nkluge-correa.github.io/",
               color="dark", className="text-decoration-none", style={'margin-right': '5px'})
 ])
 

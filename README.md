@@ -1,4 +1,4 @@
-# Password Security App 👾🔒
+# Password Cracking with Dictionary Attack 👾🔒
 
 ![demo-gif](assets/gif_demo.gif)
 
