@@ -226,7 +226,7 @@ modal_trust = html.Div(
                                 ```` 
                                 ''', className='modal-body-text-style', style={'font-size': FONT_SIZE}), html.Br(),
                                dcc.Markdown('''
-                                The code for this implementation can be accessed on [GitHub](https://github.com/Nkluge-correa), but there are many other tools ready for this kind of attack (many come pre-installed on [Kali-Linux](https://www.kali.org/)). However, remember that: _using a password cracking method to access one's own password is legal_. Using these methods or tools to gain access to someone else's password can lead to criminal charges.
+                                The code for this implementation can be accessed on [GitHub](https://github.com/Nkluge-correa/password-cracking), but there are many other tools ready for this kind of attack (many come pre-installed on [Kali-Linux](https://www.kali.org/)). However, remember that: _using a password cracking method to access one's own password is legal_. Using these methods or tools to gain access to someone else's password can lead to criminal charges.
                                 ''', className='modal-body-text-style', style={'font-size': FONT_SIZE}), html.Br(),
                                dcc.Markdown('''
                                  "_I do not believe you are cracking these passwords! You are storing these words whiteout hashing! The cake is a lie!_"
